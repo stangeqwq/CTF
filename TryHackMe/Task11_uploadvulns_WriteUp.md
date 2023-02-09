@@ -1,5 +1,5 @@
 # Task 11 Challenge - Write-up
-A very cool and 1337-like CTF file-upload web vulnerability where several CL-tools where used as well as a web reverse shell. Take note that the attack machine for TryHackMe was used to complete this challenge.
+A very cool and 1337-like CTF file-upload web vulnerability. Take note that the attack machine for TryHackMe was used to complete this challenge.
 
 ## The task
 It's challenge time!
