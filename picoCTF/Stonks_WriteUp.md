@@ -16,10 +16,10 @@ scanf("%300s", user_buf);
 printf("Buying stonks with token:\n");
 printf(user_buf);
 ```
-If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is called a format string vulnerability. As we will see, we can access parts of the stack memory by inputting to ==user_buf==, otherwise known as the API token. 
+If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is called a format string vulnerability. As we will see, we can access parts of the stack memory by inputting to <mark>user_buf</mark>, otherwise known as the API token. 
 
 We check if this vulnerability is indeed present by connecting via nc:
-```terminal
+```console
 ~ % nc mercury.picoctf.net 20195
 Welcome back to the trading app!
 What would you like to do?
