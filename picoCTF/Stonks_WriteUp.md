@@ -8,7 +8,7 @@ I decided to try something noone else has before. I made a bot to automatically 
 
 ## The Solution
 
-We look at the `vuln.c` file. In the `buy_stonks` function, we find a sketchy implementation of the `printf()` function. 
+We look at the `vuln.c` file. In the `buy_stonks()` function, we find a sketchy implementation of the `printf()` function. 
 ```C
 char *user_buf = malloc(300 + 1);
 printf("What is your API token?\n");
@@ -16,7 +16,7 @@ scanf("%300s", user_buf);
 printf("Buying stonks with token:\n");
 printf(user_buf);
 ```
-If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is a format string vulnerability. As we will see, we can access parts of the stack memory by inputting to <mark>user_buf</mark>, otherwise known as the API token. 
+If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is a format string vulnerability. As we will see, we can print parts of the stack memory by inputting to` user_buf`, otherwise known as the API token. 
 
 We check if this vulnerability is indeed present by connecting via nc:
 ```console
@@ -34,7 +34,7 @@ What is your API token?
 Buying stonks with token:
 082c0430
 ```
-The input `%08x` specifies to the `printf()` function to print 8 hexadecimal digits from the stack. To find the flag, we will continue to look into `vuln.c`. The following code block is interesting:
+The input `%08x` specifies to the `printf()` function to print 8 hexadecimal digits from the stack. Choosing 8 hexadecimal digits is optimal as computers usually have a word to be 4 bytes, in other words 8 hexadecimal digits. This is going to be crucial when we look at [endianness](https://en.wikipedia.org/wiki/Endianness). To find the flag, we will continue to look into `vuln.c`. The following code block is interesting:
 ```C
 char api_buf[FLAG_BUFFER];
 FILE *f = fopen("api","r");
@@ -44,6 +44,8 @@ if (!f) {
 }
 fgets(api_buf, FLAG_BUFFER, f);
 ```
+This is also present inside the `buy_stonks()` function and is present before asking for the API token. This suggests that the flag, stored in `api_buf`, can be found on the stack. We will try to print as much as possible from the stack and decode it afterwards.
+
 
 
 
