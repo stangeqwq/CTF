@@ -9,7 +9,7 @@ I decided to try something noone else has before. I made a bot to automatically 
 ## The Solution
 
 We look at the vuln.c file. In the buy_stonks function, we find a sketchy implementation of the `printf()` function. 
-```
+```C
 char *user_buf = malloc(300 + 1);
 printf("What is your API token?\n");
 scanf("%300s", user_buf);
@@ -19,7 +19,9 @@ printf(user_buf);
 If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is called a format string vulnerability. As we will see, we can access parts of the stack memory by inputting to ==user_buf==, otherwise known as the API token. 
 
 We check if this vulnerability is indeed present by connecting via nc:
-```shell
+```terminal
+~ % nc mercury.picoctf.net 20195
+Welcome back to the trading app!
 What would you like to do?
 1) Buy some stonks!
 2) View my portfolio
