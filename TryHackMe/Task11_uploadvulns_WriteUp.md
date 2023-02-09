@@ -1,5 +1,5 @@
 # Task 11 Challenge - Write-up
-A very cool and 1337-like CTF file-upload web vulnerability where several CL-tools where used. Take note that the attack machine for TryHackMe was used to complete this challenge.
+A very cool and 1337-like CTF file-upload web vulnerability where several CL-tools where used as well as a web reverse shell. Take note that the attack machine for TryHackMe was used to complete this challenge.
 
 ## The task
 It's challenge time!
@@ -39,9 +39,9 @@ Progress: 9029 / 220561 (4.09%)
 We look at the website and see how it responds to each of these directories. It seems only `http://jewel.uploadvulns.thm/admin` is interesting. 
 ----insert image maybe??
 
-Looking at the page source is another method of enumeration. The following lines are interesting. They indicate some sort of script for filtering file-uploads.
+Looking at the page source is another method of enumeration. The following lines are interesting. 
 ```html
-    <script src="assets/js/jquery-3.5.1.min.js"></script>
+    		<script src="assets/js/jquery-3.5.1.min.js"></script>
 		<script src="assets/js/jquery.colour-2.2.0.min.js"></script>
 		<script src="assets/js/upload.js"></script>
 		<script src="assets/js/backgrounds.js"></script>
@@ -50,3 +50,27 @@ Looking at the page source is another method of enumeration. The following lines
 		<div id="one" class="background"></div>
 		<div id="two" class="background" style="display:none;"></div>
 ```
+`<script src="assets/js/upload.js"></script>` indicate some sort of script for filtering file-uploads. By clicking on this script, we are met with the following lines of code.
+```js
+$(document).ready(function(){let errorTimeout;const fadeSpeed=1000;function setResponseMsg(responseTxt,colour){$("#responseMsg").text(responseTxt);if(!$("#responseMsg").is(":visible")){$("#responseMsg").css({"color":colour}).fadeIn(fadeSpeed)}else{$("#responseMsg").animate({color:colour},fadeSpeed)}clearTimeout(errorTimeout);errorTimeout=setTimeout(()=>{$("#responseMsg").fadeOut(fadeSpeed)},5000)}$("#uploadBtn").click(function(){$("#fileSelect").click()});$("#fileSelect").change(function(){const fileBox=document.getElementById("fileSelect").files[0];const reader=new FileReader();reader.readAsDataURL(fileBox);reader.onload=function(event){
+			//Check File Size
+			if (event.target.result.length > 50 * 8 * 1024){
+				setResponseMsg("File too big", "red");			
+				return;
+			}
+			//Check Magic Number
+			if (atob(event.target.result.split(",")[1]).slice(0,3) != "Ã¿ÃÃ¿"){
+				setResponseMsg("Invalid file format", "red");
+				return;	
+			}
+			//Check File Extension
+			const extension = fileBox.name.split(".")[1].toLowerCase();
+			if (extension != "jpg" && extension != "jpeg"){
+				setResponseMsg("Invalid file format", "red");
+				return;
+			}
+const text={success:"File successfully uploaded",failure:"No file selected",invalid:"Invalid file type"};$.ajax("/",{data:JSON.stringify({name:fileBox.name,type:fileBox.type,file:event.target.result}),contentType:"application/json",type:"POST",success:function(data){let colour="";switch(data){case "success":colour="green";break;case "failure":case "invalid":colour="red";break}setResponseMsg(text[data],colour)}})}})});
+```
+Great! It seems like the JavaScript code filters by means of (1) File Extension, (2) Magic Number, and (3) File size. Googling what the magic numbers are for jpeg files, we obtain the following hex values: `FF D8 FF`.  
+
+
