@@ -76,7 +76,6 @@ In addition, one can find a reference to the background image of the website of 
 
 Great! It seems like the JavaScript code filters by means of (1) File Extension, (2) Magic Number, and (3) File size. Since I am able to access this filtering, the script is a client-side filter which can be removed through `Burp Suite` via interception of responses. We do exactly this.
 
-![Burp Suite Interception](/Images/Task11_uploadvulns_0)
 
 Interesting, the header `X-Powered-By: Express` suggests that the server uses `Node.js` for its back-end programming language. This allows us to search online for a reverse shell code for `Node.js`. The reverse shell code used is from [here](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#nodejs)
 ```js
