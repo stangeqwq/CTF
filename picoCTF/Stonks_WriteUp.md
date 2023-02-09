@@ -16,7 +16,7 @@ scanf("%300s", user_buf);
 printf("Buying stonks with token:\n");
 printf(user_buf);
 ```
-If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is a format string vulnerability. As we will see, we can print parts of the stack memory by inputting to `user_buf`, otherwise known as the API token. 
+If you know C, then you might have noticed that the formatting argument is missing. This kind of code-implementation of the `printf()` function is a known vulnerability called format string vulnerability. As we will see, we can print parts of the stack memory by inputting to `user_buf`, otherwise known as the API token. 
 
 We check if this vulnerability is indeed present by connecting via `nc`:
 ```console
