@@ -20,8 +20,9 @@ If you know C, then you might have noticed that the formatting argument is missi
 
 We check if this vulnerability is indeed present by connecting via nc:
 ```console
-~ % nc mercury.picoctf.net 20195
+(base) stange@ericjoshua ~ % nc mercury.picoctf.net 20195
 Welcome back to the trading app!
+
 What would you like to do?
 1) Buy some stonks!
 2) View my portfolio
