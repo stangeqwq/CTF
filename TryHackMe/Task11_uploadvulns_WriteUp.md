@@ -101,7 +101,7 @@ Remember the admin page? Well, we can leverage the directory-traversal vulnerabi
 ```console
 root@ip-10-10-241-182:~# nc -lvnp 4444
 ```
-By typing in the field of the admin page with `../content/ALX.jpg`, we get a connection!!! Finally, `cat /var/www/flag.txt` gives us the flag `THM{NzRlYTUwNTIzODMwMWZhMzBiY2JlZWU2}`.
+By typing in the field of the admin page with `../content/ALX.jpg`, we get a connection!!! A reverse-shell was created! Finally, `cat /var/www/flag.txt` on our attacking machine who received the reverse shell gives us the flag `THM{NzRlYTUwNTIzODMwMWZhMzBiY2JlZWU2}`.
 
 
 
