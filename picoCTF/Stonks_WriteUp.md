@@ -60,7 +60,7 @@ What is your API token?
 Buying stonks with token:
 08cc23f0-0804b000-080489c3-f7f6cd80-ffffffff-00000001-08cc0160-f7f7a110-f7f6cdc7-00000000-08cc1180-00000001-08cc23d0-08cc23f0-6f636970-7b465443-306c5f49-345f7435-6d5f6c6c-306d5f79-5f79336e-35343036-64303664-ffc5007d-f7fa7af8-f7f7a440-f69aba00-00000001-00000000-f7e09ce9-f7f7b0c0-f7f6c5c0-f7f6c000-ffc51b38-f7dfa68d-f7f6c5c0-08048eca-ffc51b44-00000000-f7f8ef09-0804b000-f7f6c000
 ```
-Decoding the hexadecimal above using [online tools](https://cyberchef.org/), we find the interesting text `ocip{FTC0l_I4_t5m_ll0m_y_y3n5406d06dÿÅ.}` which might have been influenced by the reversed endianness. After swapping, we get the flag `picoCTF{I_l05t_4ll_my_m0n3y_6045d60d}`
+Decoding the hexadecimal above using [online tools](https://cyberchef.org/), we find the interesting text `ocip{FTC0l_I4_t5m_ll0m_y_y3n5406d06dÿÅ.}` which might have been influenced by the reversed endianness. After swapping, we get the flag `picoCTF{I_l05t_4ll_my_m0n3y_6045d60d}`.
 
 
 
