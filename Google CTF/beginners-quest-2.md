@@ -10,4 +10,4 @@ We look at the given logic gates image.
 
 ![logic gates](logic-lock.png)
 
-The gates used in the image are `AND`, `NOR`, `XOR`, and `NOT` gates. Working backwards from the right where the value is `1` or `set`. We find that the following letters should be `set` to bypass this logic-lock: `BCFIJ`. The flag is `CTF{BCFIJ}`.
+The gates used in the image are `AND`, `OR`, `NOR`, `XOR`, and `NOT` gates. Working backwards from the right where the value is `1` or `set`. We find that the following letters should be `set` to bypass this logic-lock: `BCFIJ`. The flag is `CTF{BCFIJ}`.
