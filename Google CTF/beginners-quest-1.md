@@ -32,7 +32,7 @@ const checkPassword = () => {
 };
 ```
 The input on the password field is stored in `v` by `document.getElementId("password").value`. Afterwards, a simple cipher is placed on each character's unicode value, 16 bits, `2^16 = 0-65535` possible values.
-The hex value `0xCAFE` is added to each of the characters. We can enumerate each value of the original password by subtracting `0xCAFE` from their values. I just used terminal with `python3` command.
+The hex value `0xCAFE` is added to each of the characters. We can enumerate each value of the password by subtracting `0xCAFE` from their values (this is the password that's being checked against). I just used terminal with `python3` command.
 ```console
 >>> 52037 - 0xCAFE
 71
