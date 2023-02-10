@@ -1,4 +1,4 @@
-# CCTV
+# CHEMICAL PLANT
 A simple programming CTF challenge that requires some understanding of JavaScript, if not doing a little OSINT helps.
 
 ## The Challenge
