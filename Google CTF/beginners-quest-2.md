@@ -7,4 +7,5 @@ It turned out suspect’s appartment has an electronic lock. After analyzing the
 
 ## The Solution
 We look at the given logic gates image.
-![logic gates](logic-lock.png)
+
+<img src="https://github.com/stangeqwq/CTF/edit/main/Google%20CTF/logic-lock.png)" width=50% height=50%>
