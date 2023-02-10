@@ -8,4 +8,6 @@ It turned out suspect’s appartment has an electronic lock. After analyzing the
 ## The Solution
 We look at the given logic gates image.
 
-<img src="https://github.com/stangeqwq/CTF/edit/main/Google%20CTF/logic-lock.png" width=50% height=50%>
+![logic gates](logic-lock.png)
+
+The gates used in the image are `AND`, `NOR`, `XOR`, and `NOT` gates. Working backwards from the right where the value is `1` or `set`. We find that the following letters should be `set` to bypass this logic-lock: `BCFIJ`. The flag is `CTF{BCFIJ}`.
