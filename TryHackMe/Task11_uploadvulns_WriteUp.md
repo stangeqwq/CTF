@@ -92,6 +92,7 @@ Interesting, the header `X-Powered-By: Express` suggests that the server uses `N
     return /a/; // Prevents the Node.js application from crashing
 })();
 ```
+### Attack
 Notice that I replaced the port field and IP-field appropriate to the machine who is going to be listening. In my case, it was the AttackBox machine.
 
 Now that the client-side filter is removed, we can try to upload our Node.js reverse shell. One can quickly see that the file is not accepted suggesting that there are server-side filters in place. Editing our reverse shell to have the name `reverse-shell.jpg` and uploading it however leads to an acceptance. Awesome!
