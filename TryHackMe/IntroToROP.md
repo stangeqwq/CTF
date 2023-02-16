@@ -97,6 +97,13 @@ p.interactive()
 
 The address for `pop rdi; ret` was found by typing in the console `ropper -f target --search "<desire operand>"`. In the case for `pop rsi`, the only found instance is with the local variable `r15`. This is why a dummy value was passed for this. 
 
+In total, what the ROP-chain does is this:
+1. `cyclic_find` gives us the location of the `ret` address, allowing us to manipulate the return address.
+2. `ret` first jumps to `pop rdi` which then `pops` the first value on the stack `into rdi`. In this case, after the `pop_rdi` address in the payload is `5`.
+3. next instruction then moves to `lock1` with that `rdi` argument of `5`, bypassing the lock
+4. we do the same as 2. but pop for `rdi` and `rsi` with `42` and `1776` sequentially, before calling `lock2`
+5. at this point, we have bypassed the two locks and can now print the flag.
+
 Using the script above, we get the flag:
 
 ```console
