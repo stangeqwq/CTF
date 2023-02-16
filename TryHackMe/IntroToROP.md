@@ -122,9 +122,9 @@ flag{F1r5t_ROP_c0mpl3t3}
 ## Task 4 - ROP with 32-bit binary
 Of course, with a binary accustomed to a different computer architecture, the registers, operands, and the way we do ROP change a little. The changes aren't that too big from `Task 3`. Instead of searching for `pop rdi` using `ropper` in `amd64` or in `64-bit` computers, we only need a `pop` instruction. `i386` does not use registers for functional arguments as the task above demonstrates. 
 
-To find addresses of the lock functions, use `gdb` with `p lock1` etc. This should print the address. M
+To find addresses of the lock functions, use `gdb` with `p lock1` etc. This should print the address. As usual, for the `ret` address initially, one must use a cyclic input to identify this padding. You can run `cyclic 100 > find` then `gdb <target>` on the terminal and `r < find` on gdb. This should give us an idea of the padding. Using `pwndbg` or `gef` to enchance your exploit development phase is invaluable.
 
-Our script can then be adjusted as below.
+Our script from before can be adjusted as below.
 
 ```C
 from pwn import *
@@ -164,10 +164,5 @@ Lock 2 unlocked!
 Lock 3 is a gimmie. If you get the other 2, this should work.
 Here is you flag (hopefully):
 flag{Thr33_Tw0_D0N3}
-
-[*] Got EOF while reading in interactive
-$ 
-[*] Process './three_locks_32' stopped with exit code -11 (SIGSEGV) (pid 12391)
-[*] Got EOF while sending in interactive
 ```
 
