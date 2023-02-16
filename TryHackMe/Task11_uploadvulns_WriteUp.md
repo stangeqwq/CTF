@@ -4,7 +4,7 @@ A very cool and 1337-like CTF file-upload web vulnerability. Take note that the 
 ## The task
 It's challenge time!
 
-Head over to jewel.uploadvulns.thm.
+Head over to `jewel.uploadvulns.thm.`
 
 Take what you've learned in this room and use it to get a shell on this machine. As per usual, your flag is in /var/www/. Bear in mind that this challenge will be an accumulation of everything you've learnt so far, so there may be multiple filters to bypass. The attached wordlist might help. Also remember that not all webservers have a PHP backend...
 
