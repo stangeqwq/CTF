@@ -7,7 +7,7 @@ Description
 Smash the stack Let's start off simple, can you overflow the correct buffer? The program is available here. You can view source here. And connect with it using: `nc saturn.picoctf.net 51110`
 
 ## The Solution
-It is similar albeit a little easier to [this](https://github.com/stangeqwq/CTF/blob/main/UiTHack23/Mp3%20player.md). By inputting cyclic characters, we get information on the offset of `eip`. Note that depending on your computer architecture, you might need to adjust to `i386` architecture to execute the binary. 
+It is similar albeit a little easier to [this](https://github.com/stangeqwq/CTF/blob/main/UiTHack23/Mp3%20player.md). By inputting cyclic characters, we get information on the offset of `eip`. Note that depending on your computer architecture, you might need to adjust to `i386` architecture to execute the binary. In addition, we can safely assume that all security measures such as `canaries`, `NX`, `PIE`, etc. are disabled.
 ```console
 ┌──(ericjoshua㉿kali)-[~/Downloads]
 └─$ nc saturn.picoctf.net 55885                     
