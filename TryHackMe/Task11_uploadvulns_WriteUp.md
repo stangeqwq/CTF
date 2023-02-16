@@ -72,7 +72,7 @@ $(document).ready(function(){let errorTimeout;const fadeSpeed=1000;function setR
 			}
 const text={success:"File successfully uploaded",failure:"No file selected",invalid:"Invalid file type"};$.ajax("/",{data:JSON.stringify({name:fileBox.name,type:fileBox.type,file:event.target.result}),contentType:"application/json",type:"POST",success:function(data){let colour="";switch(data){case "success":colour="green";break;case "failure":case "invalid":colour="red";break}setResponseMsg(text[data],colour)}})}})});
 ```
-In addition, one can find a reference to the background image of the website of the form `/content/XXX.jpg`. It is reasonable to think that the images are uploaded are stored there.
+In addition, one can find a reference to the background image of the website of the form `/content/XXX.jpg`. It is reasonable to think that the images uploaded are stored there.
 
 Great! It seems like the JavaScript code filters by means of (1) File Extension, (2) Magic Number, and (3) File size. Since I am able to access this filtering, the script is a client-side filter which can be removed through `Burp Suite` via interception of responses. We do exactly this.
 
