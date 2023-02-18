@@ -126,7 +126,7 @@ To find addresses of the lock functions, use `gdb` with `p lock1` etc. This shou
 
 Our script from before can be adjusted as below.
 
-```C
+```python
 from pwn import *
 
 context.update(arch='i386', os='linux')
@@ -167,7 +167,7 @@ flag{Thr33_Tw0_D0N3}
 ```
 ##Task 5 - libc
 
-```console
+```python
 from pwn import *
 
 context.update(arch='i386', os='linux')
