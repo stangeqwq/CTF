@@ -167,6 +167,9 @@ flag{Thr33_Tw0_D0N3}
 ```
 ## Task 5 - libc
 
+```C
+
+```
 
 
 ```python
@@ -235,6 +238,39 @@ flag{l34k_2_pwn}
 ```
 
 ## Task 6 - final ret2libc
+
+```C
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+void start() {
+  printf("Use me to read flag.txt!\n");
+
+  char buf[32];
+  memset(buf, 0, sizeof(buf));
+  read(0, buf, 256);
+}
+
+int main()
+{
+  start();
+
+  return 0;
+}
+```
+
+```console
+buzz@intro2rop:~/final$ ropper -f final --search "pop rdi"
+[INFO] Load gadgets from cache
+[LOAD] loading... 100%
+[LOAD] removing double gadgets... 100%
+[INFO] Searching for gadgets: pop rdi
+
+[INFO] File: final
+0x0000000000400633: pop rdi; ret; 
+```
 
 ```python
 from pwn import *
