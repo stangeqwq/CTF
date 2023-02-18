@@ -61,7 +61,7 @@ int main() {
 	return 0;
 }
 ```
-Reading through the code, we can understand that bypassing the three locks is the key to be able to see the flag. In `lock1`, an argument is needed that is checked against `5`, while `lock2` requires two arguments. Running a simple `ret` to `lock3()` isn't going to cut it. Now, we need a deeper understanding of ROP to be able to manipulate the input in these functions' arguments. Luckily, given some thinking, operands such as `pop rdi; ret` allow us to pass arguments to these functions. `rdi`, `rsi`, and `rdx` are among the registers that handle functional arguments. You can read more [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1222/guide/x86-64.html).
+Reading through the code, we can understand that bypassing the three locks is the key to be able to see the flag. In `lock1`, an argument is needed that is checked against `5`, while `lock2` requires two arguments. Running a simple `ret` to `lock3()` isn't going to cut it. Now, we need a deeper understanding of ROP to be able to manipulate the input in these functions' arguments. Luckily, given some thinking, gadgets such as `pop rdi; ret` allow us to pass arguments to these functions. `rdi`, `rsi`, and `rdx` are among the registers that handle functional arguments. You can read more [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1222/guide/x86-64.html).
 
 In fact, this is enough to start writing our exploit. Here is the exploit that I used:
 ```python
