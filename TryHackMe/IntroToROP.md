@@ -13,7 +13,7 @@ buzz@intro2rop:~/first_rop$ checksec three_locks
     PIE:      No PIE (0x400000)
 ```
 With [`NX enabled`](https://en.wikipedia.org/wiki/NX_bit), the binary does not allow us to both write or execute on memory, `stack`. This feature is the thus called `write XOR execute`. 
-Because of this, `ROP` is needed wherein we use operands within the binary itself to execute. Which operands are useful, can we understand through looking at the `three_locks.c` source code.
+Because of this, `ROP` is needed wherein we use operands, or `gadgets`, within the binary itself to execute. Which gadgets are useful, can we understand through looking at the `three_locks.c` source code.
 ```C
 #include <stdio.h>
 // global variables
