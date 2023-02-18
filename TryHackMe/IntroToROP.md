@@ -1,6 +1,8 @@
 # Intro To ROP
 This room is created by [DiZma](https://tryhackme.com/p/DiZma) and is an introduction to `rop` or `return oriented programming` wherein one exploits a buffer overflow to control the flow of a program or binary by polluting its `return` address or instruction pointer. The hacker is able to so-called `ret2libc` or `ret2win` which means generally jumping into certain functions within the binary to make it do unintended actions.
 
+Huge thanks to `DiZma` once again for allowing me to beta test this cool room! This was my gateway into understanding rop!
+
 ## Task 3 - First ROP
 We inspect the files that are in the `~\first_rop` directory. Running a `checksec` on `three_locks` gives us a pretty vulnerable binary.
 ```console
