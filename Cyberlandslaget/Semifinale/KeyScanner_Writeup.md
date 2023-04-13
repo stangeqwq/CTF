@@ -1,5 +1,5 @@
 # Keyscanner
-En gøy forensics oppgave der man måtte integrere forståelse av nettverkslogger med et script som sender `http`-requests. 
+En gøy forensics oppgave med litt databehandling der man måtte integrere forståelse av nettverkslogger med et script som sender `http`-requests. 
 
 # Oppgave av Vealending 
 Our CSIRT recently discovered a keylogger running on one of our systems.
