@@ -108,5 +108,12 @@ with open('new.txt') as f:
 				continue
 ```
 
+```console
+stange@ericjoshua key-scanner % python3 decrypt.py
+kp *tabtabtabtabkp *SggSlloobablal  SsSsttraratteeggyy  SuuSpdpadatete a nandd  SuSuppccoommiinngg  SqqSuueeararttee<<<<<<<<<<aarrttererllyy S rSreevvee<<ieiwewenterenterSdSdeaerar  tetaea<<<<<<StSteaema m SmSmeemmererss<<<<<<bbererss,,enterenterenterenterSi iS hohoppee  tthihiss  memesssasabebe<<<<gege  fifindsnd sy you ou iinn  ggoooodd  hehaeatt<<llthth  anand d hihiggh h ssppiiriritsts.. S aSass w wee  aapppprrooaachch  tthhee  eenndd  ooff  tthhwee  uu<q<quueses<<<a<rartteerr<<rr..<<, , 
+```
+Den interessante delen viser flagget: `fflalgag^kp *77kp *^55cc44nnS-S-cc00dd3355S-S-44rr33S--S44ww335500mm33S11SS--SbbSuuS77S--Scc44SSSnnS<<<<<<ccS44S<<44SnnSS--SSyyS00uuS--Srr3344SddSS-S-55pepecc1144SlSl<<<<<<<<<<33cc1144SllSS--SccShhS44rr44cc7733SrSr55S++SS3S3..--,,S11SS--S--,,..S++S^kp *00kp *^`
+
+En del av det er `flag{5c4n_c0d35_` osv.
 
 
