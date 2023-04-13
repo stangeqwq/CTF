@@ -77,4 +77,36 @@ if __name__ == "__main__":
 Vi filtrerer slik `http.request.uri matches "/l0gg3r_3ndp0in7"` og lagrer datene som var tilsendt som plaintext. Deretter kan vi lettere utvinne all dataene og lagre det i en fil. For eksempel brukte jeg `cat data.txt | grep "0000  " -A 8 -B 0 > new.txt`.
 Et eksempel packet inneholder også `layout` som beskriver hvilken keyboard layout var blitt brukt. Dette er nyttig for å dekryptere dataene ved skankodene.
 
+Python-skriptet blir:
+```python
+scan_codes = {
+    "02": "1",
+    "03": "2",
+    "04": "3",
+    "05": "4",
+    "06": "5",
+    "07": "6",
+    "08": "7",
+    "09": "8",
+    "0a": "9",
+    "0b": "0",
+    "0c": "+",
+    "0d": "\\",
+    "0e": "<"
+    #... osv
+}
+
+with open('new.txt') as f:
+	for line in f:
+		if len(line) < 5: continue
+		codes = line.split(' ')
+		for code in codes:
+			if len(code) > 2: continue
+			try:
+				print(scan_codes[code], end='')
+			except:
+				continue
+```
+
+
 
