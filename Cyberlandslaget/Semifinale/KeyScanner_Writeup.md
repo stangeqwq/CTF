@@ -75,4 +75,6 @@ if __name__ == "__main__":
 
 ```
 Vi filtrerer slik `http.request.uri matches "/l0gg3r_3ndp0in7"` og lagrer datene som var tilsendt som plaintext. Deretter kan vi lettere utvinne all dataene og lagre det i en fil. For eksempel brukte jeg `cat data.txt | grep "0000  " -A 8 -B 0 > new.txt`.
-Et eksempel packet inneholder også `layout` som beskriver hvilken keyboard layout var blitt brukt. Dette er nyttig for å dekryptere dataene ved skankodene. 
+Et eksempel packet inneholder også `layout` som beskriver hvilken keyboard layout var blitt brukt. Dette er nyttig for å dekryptere dataene ved skankodene.
+
+
