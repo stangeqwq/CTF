@@ -38,7 +38,7 @@ print(f"bits={bits}")
 print(f"n={n}")
 print(f"ct={ct}")
 ```
-Vi får 65 32-bit integers som vi kan bruke til å finne ut hva tallet `p` var i `n`, slik blir det mulig å finne ut `q` ved `n // p`. 
+Vi får 65 32-bit integers som vi kan bruke til å finne ut hva tallet `p` var i `n`. Slik blir det mulig å finne ut `q` ved `n // p`. 
 
 Skriptet blir da der vi fôrer inn tallene i `bits`.
 ```python
