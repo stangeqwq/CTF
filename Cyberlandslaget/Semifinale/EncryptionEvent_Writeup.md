@@ -149,7 +149,8 @@ decoded_data = base64.b64decode(encoded_data)
 with open("image.png", "wb") as f:
     f.write(decoded_data)
 ```
-Flagget finner altså da
+Flagget finner vi altså da
+
 ![intro](https://github.com/stangeqwq/CTF/blob/main/images/encryptionevent.png)
 
 
