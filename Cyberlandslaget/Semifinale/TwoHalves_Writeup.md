@@ -1,5 +1,5 @@
 # Two-Halves - crypto
-En krypto-CTF oppgave der man måtte utnytte sårbarheten ved `random` biblioteket i python.
+En krypto-CTF oppgave der man måtte utnytte sårbarheten ved `random` biblioteket i python. 
 
 ## Oppgave
 Two halves makes a whole. Can you use the given bits to predict the prime, find the twist and decrypt the flag?
