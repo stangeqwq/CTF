@@ -53,5 +53,5 @@ Bad password for file 'flag.txt'
 stange@ericjoshua filsystem %
 ```
 
-Flagget blir dermed `flag{En_skal_ikke_skue_paaskekyllingen_på_fjaera}`
+Flagget blir dermed `flag{En_skal_ikke_skue_paaskekyllingen_paa_fjaera}`
             
