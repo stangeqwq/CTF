@@ -1,0 +1,34 @@
+% STD RAS:0
+    radius <- IDA
+    RAP <- #0
+loop:
+    NIP <- #calc_distance_write
+    RAP ? NIP <- #loop
+    RAD <- #0
+    NIP <- #HLT
+
+calc_distance_write:
+    ; x distance squared
+    FPX <- FIF <- RAX
+    FPY <- FIF <- #128
+    FPY <- FPX <- FDF
+    RES <- FPR 
+    ; y distance squared
+    FPX <- FIF <- RAY
+    FPY <- FIF <- #128
+    FPY <- FPX <- FDF
+    FPX <- FPR 
+    ; the sum of their squares, sqrt 
+    FPY <- RES 
+    FPX <- FSR <- FSM
+    ; see if it is within radius
+    ALX <- FFI <- FPX
+    ALY <- radius
+    ULT ? RAI <- #12
+    EQU ? RAI <- #12
+    UGT ? RAI <- #0
+    ; return
+    NIP <- PIP
+
+radius: 0
+

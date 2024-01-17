@@ -1,0 +1,129 @@
+% STD
+NEWLINE = 10
+loop:
+    newline_check <- #0
+    !ICO ? NIP <- #HLT
+    bin_str <- IDA
+    PRN <- bin_str
+    
+    line_c <- DEC <- line_c
+    space_c <- DEC <- space_c
+    !line_c ? NIP <- #new_line
+    newline_check ? NIP <- #loop
+    !space_c ? NIP <- #space_print
+
+    NIP <- #loop
+    
+new_line:
+    PRN <- NEWLINE;
+    newline_check <- #1;
+    line_c <- #8
+    NIP <- PIP
+space_print:
+    PRN <- space
+    space_c <- #1
+    NIP <- PIP
+
+line_c: 8
+space_c: 1
+newline_check: 0
+ptr: 0
+bin_str: ""
+space: " "
+
+---
+
+% PRI:14 SIM:13 ALU:12
+loop:
+    ; Stop if there is no more input
+    !ICO ? NIP <- #HLT
+    ; Read one word into RES
+    RES <- IDA
+
+    ; Print the 4 hex digits of RES
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+    ; Print newline
+    PRN <- #10
+    ; Jump back to loop
+    NIP <- #loop
+rotate_and_print_digit:
+    ; Rotate RES 4 times to the left
+    RES <- LRO <- LRO <- LRO <- LRO <- RES
+    ; Add the lower 4 bits to the address of
+    ; hex_chars and print the character
+    ALX <- RES
+    ALY <- #$000F
+    ALX <- AND
+    ALY <- #hex_chars
+    PRN <- *SUM
+    ; Return to the caller
+    NIP <- PIP
+hex_chars: "0123456789ABCDEF"
+
+----- modified ---
+
+
+
+% STD
+
+loop:
+    ; Stop if there is no more input
+    !ICO ? NIP <- #end
+    ; Read one word into RES
+    RES <- IDA
+
+    !space_c ? NIP <- #space_print
+
+    ; Print the 4 hex digits of RES
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+    NIP <- #rotate_and_print_digit
+
+    ; Print space every bytes (time) 
+    ; Print newline 4 bytes
+    newline_check <- #0
+    line_c <- DEC <- line_c
+    space_c <- DEC <- space_c
+    !line_c ? NIP <- #new_line
+    newline_check ? NIP <- #loop
+
+    NIP <- #loop
+rotate_and_print_digit:
+    ; Rotate RES 4 times to the left
+    RES <- LRO <- LRO <- LRO <- LRO <- RES
+    ; Add the lower 4 bits to the address of
+    ; hex_chars and print the character
+    ALX <- RES
+    ALY <- #$000F
+    ALX <- AND
+    ALY <- #hex_chars
+    PRN <- *SUM
+    ; Return to the caller
+    NIP <- PIP
+hex_chars: "0123456789ABCDEF"
+
+new_line:
+    PRN <- #10
+    newline_check <- #1
+    line_c <- #16
+    NIP <- PIP
+space_print:
+    !newline_check ? PRN <- space
+    space_c <- #1
+    NIP <- PIP
+end:
+    ; we check if it coincides with other nl
+   !newline_check ? PRN <- #10
+   NIP <- #HLT
+
+line_c: 16
+space_c: 1
+newline_check: 1
+ptr: 0
+bin_str: ""
+space: " "
+    

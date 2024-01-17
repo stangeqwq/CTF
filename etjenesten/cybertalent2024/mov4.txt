@@ -1,0 +1,181 @@
+% MIN
+loop:
+    !counter ? NIP <- #HLT
+    ; no str printed
+    string_prn <- #0
+    ; increase number
+    current_number <- INC <- current_number
+
+    digit_1 <- INC <- digit_1
+    digit_1_char <- INC <- digit_1_char
+    digit_1_c <- DEC <- digit_1_c
+
+    !digit_1_c ? NIP <- #update_digit_2
+    !digit_2_c ? NIP <- #update_digit_3
+    !digit_3_c ? NIP <- #update_digit_4
+    !digit_4_c ? NIP <- #update_digit_5
+
+    number_c <- DEC <- number_c
+    ; update our fizzbuzz counter
+    fizz_c <- DEC <- fizz_c
+    buzz_c <- DEC <- buzz_c
+
+    ptr <- #str_fizz
+    !fizz_c ? NIP <- #fizz_print
+    ptr <- #str_buzz
+    !buzz_c ? NIP <- #buzz_print
+
+    !string_prn ? NIP <- #number_print
+    PRN <- #10
+
+    counter <- DEC <- counter
+    NIP <- #loop
+
+fizz_print:
+    STT <- PIP
+    NIP <- #fizz_print_loop
+
+fizz_print_loop:
+    !*ptr ? NIP <- STT
+    PRN <- *ptr
+    ptr <- INC <- ptr
+
+    ; we printed a string,
+    ; avoid printing numbers
+
+    string_prn <- #1 
+    fizz_c <- #3
+    NIP <- #fizz_print_loop
+
+buzz_print:
+    STT <- PIP
+    NIP <- #buzz_print_loop
+
+buzz_print_loop:
+    !*ptr ? NIP <- STT
+    PRN <- *ptr
+    ptr <- INC <- ptr
+
+    string_prn <- #1
+    buzz_c <- #5
+    NIP <- #buzz_print_loop
+
+number_print:
+    STT <- PIP
+    number_c <- current_number
+    NIP <- #number_to_str_print
+
+number_to_str_print:
+
+    digit_5 ? NIP <- #print_5_digits
+    digit_4 ? NIP <- #print_4_digits
+    digit_3 ? NIP <- #print_3_digits
+    digit_2 ? NIP <- #print_2_digits
+    digit_1 ? NIP <- #print_1_digits
+    digits_printed <- #0
+
+    NIP <- STT
+
+print_5_digits:
+    PRN <- digit_5_char
+    PRN <- digit_4_char
+    PRN <- digit_3_char
+    PRN <- digit_2_char
+    PRN <- digit_1_char
+    digits_printed <- #1
+    NIP <- PIP
+print_4_digits:
+    digits_printed ? NIP <- PIP
+    PRN <- digit_4_char
+    PRN <- digit_3_char
+    PRN <- digit_2_char
+    PRN <- digit_1_char
+    digits_printed <- #1
+    NIP <- PIP
+
+print_3_digits:
+    digits_printed ? NIP <- PIP
+    PRN <- digit_3_char
+    PRN <- digit_2_char
+    PRN <- digit_1_char
+    digits_printed <- #1
+    NIP <- PIP
+
+print_2_digits:
+    digits_printed ? NIP <- PIP
+    PRN <- digit_2_char
+    PRN <- digit_1_char
+    digits_printed <- #1
+    NIP <- PIP
+
+print_1_digits:
+    digits_printed ? NIP <- PIP
+    PRN <- digit_1_char
+    digits_printed <- #1
+    NIP <- PIP
+
+
+update_digit_2:
+    digit_1 <- #0
+    digit_1_char <- #48
+    digit_2 <- INC <- digit_2
+    digit_2_char <- INC <- digit_2_char
+    digit_2_c <- DEC <- digit_2_c
+    digit_1_c <- #10
+    NIP <- PIP
+
+update_digit_3:
+    digit_2 <- #0
+    digit_2_char <- #48
+    digit_3 <- INC <- digit_3
+    digit_3_char <- INC <- digit_3_char
+    digit_3_c <- DEC <- digit_3_c
+    digit_2_c <- #10
+    NIP <- PIP
+
+update_digit_4:
+    digit_3 <- #0
+    digit_3_char <- #48
+    digit_4 <- INC <- digit_4
+    digit_4_char <- INC <- digit_4_char
+    digit_4_c <- DEC <- digit_4_c
+    digit_3_c <- #10
+    NIP <- PIP
+
+update_digit_5:
+    digit_4 <- #0
+    digit_4 <- #48
+    digit_5 <- INC <- digit_5
+    digit_5_char <- INC <- digit_5_char
+    digit_5_c <- DEC <- digit_5_c
+    digit_4_c <- #10
+    NIP <- PIP
+
+string_prn: 0
+str_fizz: "Fizz", 0
+str_buzz: "Buzz", 0
+counter: 10000
+current_number: 0
+number_c: 0  ; used for digit update to print
+; 48 is the initial character for 1
+digit_1: 0
+digit_1_char: 48
+digit_2: 0
+digit_2_char: 48
+digit_3: 0
+digit_3_char: 48
+digit_4: 0
+digit_4_char: 48
+digit_5: 0
+digit_5_char: 48
+digit_1_c: 10
+digit_2_c: 10
+digit_3_c: 10
+digit_4_c: 10
+digit_5_c: 10
+
+digits_printed: 0
+
+fizz_c: 3
+buzz_c: 5
+ptr: 0

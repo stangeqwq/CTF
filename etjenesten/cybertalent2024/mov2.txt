@@ -1,0 +1,178 @@
+% STD RAS:0
+    RAP <- #0
+    RAC <- #0 
+loop:
+    ; we create a red rectange 6x6
+    ; top left at 18,48
+    current_posX <- #18
+    current_posY <- #48
+    ALX <- #60
+    ALY <- #60
+    color <- #2
+    NIP <- #rectangle_create
+
+    DBG <- ALY
+    RAD <- #0
+    NIP <- #HLT
+
+rectangle_create:
+    ; start coloring bottom left
+    ; set pixel at right row
+    STT <- ALX
+    ALX <- current_posY
+    RAY <- SUM
+    DBG <- SUM
+
+    ; loop for row
+    ; push on stack, save our dimensions
+    ALX <- STT
+    STT <- ALX
+    STT <- ALY
+    DBG <- ALY
+    STT <- NIP
+    DBG <- PIP
+    DBG <- NIP
+    NIP <- #row_color
+    ALY <- STT
+    ALX <- STT
+    DBG <- ALY
+    DBG <- ALX
+
+    ; loop for column
+    ALY <- DEC <- ALY
+    ALY ? NIP <- #rectangle_create
+
+    ; return
+    NIP <- STT
+row_color:
+
+    DBG <- PIP
+    ; color from left to right
+    ALY <- current_posX
+    RAX <- SUM 
+    RAW <- color
+    ALX <- DEC <- ALX
+    DBG <- ALX
+    DBG <- ALY
+    !ALX ? NIP <- PIP
+    
+    ; return
+    NIP <- #row_color
+
+color: 2
+current_posX: 18
+current_posY: 48
+
+; NORWEGIAN FLAG
+; 256 x 256 if 1 - 10 pixels => we need 6+1+2+1+6 = 160 6+1+2+1+12 = 220, 160 x 220 pixels
+; 220 x 160, 256-220 = 36 (18 each edge column), 256-160 = 96 (48 each edge row)
+; start (18, 48), top left of the flag
+; color wise; R - W - B - W - R => #2, #12, #9, #12, #2
+; a rectangle creator which takes in WIDTH AND ROW and creates the rectangle
+
+--------
+
+% STD RAS:0
+    ; Start at 0,0
+    RAP <- #0
+loop:
+    ; Combine x and y using bitwise or
+    ; and write the pixel
+    ALX <- RAX
+    ALY <- RAY
+    RAI <- ORR
+    
+    color <- red
+    x <- x1
+    y <- y1
+    NIP <- #calc_distance_write
+    
+    ;color <- green
+    ;x <- x2
+    ;y <- y2
+    ;NIP <- #calc_distance_write
+
+    ;color <- blue
+    ;x <- x3
+    ;y <- y3
+    ;NIP <- #calc_distance_write
+
+    ;color <- orange
+    ;x <- x4
+    ;y <- y4
+    ;NIP <- #calc_distance_write
+
+    ;color <- purple
+    ;x <- x5
+    ;y <- y5
+    ;NIP <- #calc_distance_write
+
+    ; RAI will increment RAP, so loop until
+    ; it reaches 0 again
+    RAP ? NIP <- #loop
+    ; Send the image to the monitor
+    RAD <- #0
+    ; Stop
+    NIP <- #HLT
+calc_distance_write:
+    ; x distance squared
+    FPX <- FIF <- RAX
+    FPY <- FIF <- x
+    FPY <- FPX <- FDF
+    RES <- FPR 
+    ; y distance squared
+    FPX <- FIF <- RAY
+    FPY <- FIF <- y
+    FPY <- FPX <- FDF
+    FPX <- FPR 
+    ; the sum of their squares, sqrt 
+    FPY <- RES 
+    FPX <- FSR <- FSM
+    ; see if it is within radius
+    ALX <- FFI <- FPX
+    ALY <- radius
+    ULT ? RAI <- color
+    EQU ? RAI <- color
+    ; return
+    NIP <- PIP
+
+x1: 85
+y1: 85
+x2: 213
+y2: 85
+x3: 128
+y3: 128
+x4: 85
+y4: 213
+x5: 213
+y5: 213
+x: 128
+y: 128
+red: 2
+green: 6
+blue: 9
+orange: 3
+purple: 1
+color: 0
+radius: 40
+
+----HAKKET LOSNING---
+
+---ekte problem---
+
+% STD
+    counter <- #10
+loop:
+    DBG <- counter
+    counter <- DEC <- counter
+    NIP <- #first_loop
+    counter ? NIP <- #loop
+    NIP <- #HLT
+
+first_loop:
+    DBG <- counter_2
+    counter2 <- DEC <- counter2
+    counter2 ? NIP <- #first_loop
+    NIP <- PIP
+counter: 0
+counter2: 0

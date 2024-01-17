@@ -1,0 +1,17 @@
+% PRI:14 ; Set the machine configuration 
+NEWLINE = 10
+loop:
+    ; Stop the program if ptr points to 0
+	!*ptr ? NIP <- #HLT ; if the value of what ptr points is not 0 (1 or TRUE) stop program by writing $FFFF (#HLT) on NIP
+    ; Write a character to the printer
+	PRN <- *ptr
+    ; Increment ptr
+	INC <- ptr
+	ptr <- INC
+    ; Continue the loop
+	NIP <- #loop
+    ; The string to print
+
+string: "MOV to the cloud!", NEWLINE, 0
+; Pointer to the string
+ptr: string 
