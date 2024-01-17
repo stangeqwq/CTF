@@ -4,6 +4,7 @@ heap_count = 0
 heap_counts = []
 index = 0
 
+# hentet fra database of tallrekker
 with open('sprague_grundy_gameofwin.txt', 'r') as f:
     lines = f.readlines()
 
@@ -15,6 +16,10 @@ def grundy_sum(grundy_numbers):
     for grundy_number in grundy_numbers:
         grundy_sum ^= grundy_number
     return grundy_sum
+
+# provde a finne tallrekken ved en rekursiv algoritme som beregner
+# sprague-grundy tallene (tallene i rettet graf) (litt grafteori og kombinatorisk spillteori)
+# omgjøre spillet til et nim-spill med flere "heaps"
 def calculate_grundy_number(position):
     not_finished = False
     if position == "1":
