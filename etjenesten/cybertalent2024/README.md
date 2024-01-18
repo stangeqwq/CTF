@@ -12,7 +12,7 @@ Jeg brukte mesteparten av tiden min til `Department of Intelligence` og `Departm
 ## Department of Intelligence
 Det kan være nyttig å lese dokumentasjon om `BITS`-protokollet nedenfra, da finner man ut hvordan å få bitstrømmen ut. Det er nok å finne `11` som viser slutten av `fibonacci-tallene` og finne når `bildet` begynner. 32-bits encryption kan man brute-force med samme algoritmen, siden krypteringsalgoritmen er symmetrisk.
 
-For `bitswin`, kan man tenke at hvert `11111` som en heap, der man tar visse verdier fra, lik på `NIM`-spillet. Da blir spillet et problem å finne `nim-verdier` (et enkelt `grafteori` problem) for hvert heap for deretter å kjøre `sum-of-games` teoremet i `kombinatorisk spillteori`. Det blir `xor` operasjon. Først var jeg ikke sikker på tallrekken, så utviklet jeg en `rekursiv` algoritme som løser verdiene for hver `node` i rettet graf. Tallrekken søkte jeg deretter på databasen og brukte det videre.
+For `bitswin`, kan man tenke at hvert `11111` som en heap, der man tar visse verdier fra, lik på `NIM`-spillet. Da blir spillet et problem å finne `nim-verdier` (et enkelt `grafteori` problem) for hvert heap for deretter å kjøre `sum-of-games` teoremet i `kombinatorisk spillteori`. Det blir `xor` operasjon. Først var jeg ikke sikker på tallrekken, så utviklet jeg en `rekursiv` algoritme som løser nim-verdiene for hver `node` (representert antall `1` i tilleg til `11`) i rettet graf. Tallrekken søkte jeg deretter på databasen for tallrekker [https://oeis.org/] og brukte det videre.
 
 ## Department of Development and Test
 Det bør være løselig med litt dedikasjon og nysgjerrighet på hvordan `MOV-16` fungerer, et `assembly` lignende lavnivå programmeringsspråk.
